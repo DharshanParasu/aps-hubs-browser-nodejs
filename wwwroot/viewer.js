@@ -1,6 +1,16 @@
 async function getAccessToken(callback) {
     try {
-        const resp = await fetch('/api/auth/token');
+        const token = sessionStorage.getItem('aps_token');
+        if (!token) {
+            throw new Error('No token available');
+        }
+        
+        const resp = await fetch('/api/auth/token', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
         if (!resp.ok)
             throw new Error(await resp.text());
         const { access_token, expires_in } = await resp.json();
@@ -13,7 +23,7 @@ async function getAccessToken(callback) {
 
 export function initViewer(container) {
     return new Promise(function (resolve, reject) {
-            Autodesk.Viewing.Initializer({ env: 'AutodeskProduction', getAccessToken }, function () {
+        Autodesk.Viewing.Initializer({ env: 'AutodeskProduction', getAccessToken }, function () {
             const config = {
                 extensions: ['Autodesk.DocumentBrowser']
             };
@@ -26,12 +36,15 @@ export function initViewer(container) {
 }
 
 export function loadModel(viewer, urn) {
-    function onDocumentLoadSuccess(doc) {
-        viewer.loadDocumentNode(doc, doc.getRoot().getDefaultGeometry());
-    }
-    function onDocumentLoadFailure(code, message) {
-        alert('Could not load model. See console for more details.');
-        console.error(message);
-    }
-    Autodesk.Viewing.Document.load('urn:' + urn, onDocumentLoadSuccess, onDocumentLoadFailure);
+    return new Promise((resolve, reject) => {
+        function onDocumentLoadSuccess(doc) {
+            viewer.loadDocumentNode(doc, doc.getRoot().getDefaultGeometry());
+            resolve();
+        }
+        function onDocumentLoadFailure(code, message) {
+            console.error('Model load failed:', message);
+            reject(new Error(message));
+        }
+        Autodesk.Viewing.Document.load('urn:' + urn, onDocumentLoadSuccess, onDocumentLoadFailure);
+    });
 }

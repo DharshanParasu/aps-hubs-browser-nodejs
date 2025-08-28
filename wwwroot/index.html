@@ -7,21 +7,77 @@
     <link rel="icon" type="image/x-icon" href="https://cdn.autodesk.io/favicon.ico">
     <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.css">
     <link rel="stylesheet" href="https://unpkg.com/inspire-tree-dom@4.0.6/dist/inspire-tree-light.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/main.css">
 
     <title>Autodesk Platform Services: Hubs Browser</title>
 </head>
 
 <body>
+    <!-- Token Input Modal -->
+    <div id="tokenModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-key"></i> Enter APS Access Token</h2>
+                <p>Please provide your Autodesk Platform Services access token to continue</p>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="tokenInput">Access Token</label>
+                    <textarea id="tokenInput" placeholder="Enter your APS access token here..." rows="4"></textarea>
+                    <small class="help-text">Your token will be stored securely in your browser session</small>
+                </div>
+                <div class="button-group">
+                    <button id="submitToken" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Connect
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="header">
-        <img class="logo" src="https://cdn.autodesk.io/logo/black/stacked.png" alt="Autodesk Platform Services">
-        <span class="title">Hubs Browser</span>
-        <button id="login" style="visibility: hidden;">Login</button>
+        <div class="header-left">
+            <img class="logo" src="https://cdn.autodesk.io/logo/black/stacked.png" alt="Autodesk Platform Services">
+            <div class="title-section">
+                <h1 class="title">Hubs Browser</h1>
+                <span class="subtitle">Autodesk Platform Services</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div id="userInfo" class="user-info" style="display: none;">
+                <i class="fas fa-user-circle"></i>
+                <span id="userName"></span>
+            </div>
+            <button id="login" class="btn btn-outline" style="visibility: hidden;">
+                <i class="fas fa-key"></i> Set Token
+            </button>
+        </div>
     </div>
+    
     <div id="sidebar">
-        <div id="tree"></div>
+        <div class="sidebar-header">
+            <h3><i class="fas fa-sitemap"></i> Project Structure</h3>
+        </div>
+        <div id="tree" class="tree-container"></div>
+        <div id="loadingTree" class="loading-state" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading projects...</p>
+        </div>
     </div>
+    
     <div id="preview"></div>
+    
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading model...</p>
+        </div>
+    </div>
+
     <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
     <script src="https://unpkg.com/inspire-tree@4.3.1/dist/inspire-tree.js"></script>

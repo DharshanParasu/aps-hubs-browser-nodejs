@@ -1,92 +1,443 @@
+* {
+    box-sizing: border-box;
+}
+
 body, html {
     margin: 0;
     padding: 0;
     height: 100vh;
-    font-family: ArtifaktElement;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
 }
 
-#header, #sidebar, #preview {
-    position: absolute;
-}
-
-#header {
-    height: 3em;
-    width: 100%;
+/* Modal Styles */
+.modal {
     display: flex;
-    flex-flow: row nowrap;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 500px;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    padding: 32px 32px 16px;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.modal-header h2 i {
+    color: #667eea;
+    margin-right: 8px;
+}
+
+.modal-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.modal-body {
+    padding: 32px;
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+    font-size: 14px;
+}
+
+.input-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+.input-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.help-text {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+}
+
+/* Button Styles */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-outline {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Header Styles */
+#header {
+    height: 70px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 24px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+}
+
+.title-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    color: #1f2937;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.user-info i {
+    font-size: 18px;
+    color: #667eea;
+}
+
+/* Sidebar Styles */
 #sidebar {
-    width: 25%;
+    width: 320px;
     left: 0;
-    top: 3em;
+    top: 70px;
     bottom: 0;
-    overflow-y: scroll;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
+.sidebar-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar-header h3 i {
+    color: #667eea;
+}
+
+.tree-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+/* Preview Styles */
 #preview {
-    width: 75%;
+    left: 320px;
     right: 0;
-    top: 3em;
+    top: 70px;
     bottom: 0;
+    position: absolute;
+    background: #f8fafc;
+    border-radius: 16px 0 0 0;
+    overflow: hidden;
 }
 
-#header > * {
-    height: 2em;
-    margin: 0 0.5em;
+/* Loading States */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #6b7280;
 }
 
-#login {
-    font-family: ArtifaktElement;
-    font-size: 1em;
+.loading-state i {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: #667eea;
 }
 
-#header .title {
-    height: auto;
-    margin-right: auto;
+.loading-state p {
+    margin: 0;
+    font-size: 14px;
 }
 
-#tree {
-    margin: 0.5em;
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-@media (max-width: 768px) {
-    #sidebar {
-        width: 100%;
-        top: 3em;
-        bottom: 75%;
-    }
-    #preview {
-        width: 100%;
-        top: 25%;
-        bottom: 0;
-    }
+.loading-content {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.loading-content i {
+    font-size: 32px;
+    color: #667eea;
+    margin-bottom: 16px;
+}
+
+.loading-content p {
+    margin: 0;
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Tree Customization */
+.inspire-tree .wholerow {
+    background: transparent;
+}
+
+.inspire-tree .wholerow-hovered {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.inspire-tree .wholerow-selected {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+.inspire-tree .title {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 400;
+}
+
+.inspire-tree .focused .title {
+    color: #1f2937;
+    font-weight: 500;
+}
+
+/* Icon Styles */
+.icon-hub:before,
+.icon-project:before,
+.icon-my-folder:before,
+.icon-item:before,
+.icon-version:before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.7;
 }
 
 .icon-hub:before {
-    background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/apps-16.svg); /* or https://raw.githubusercontent.com/primer/octicons/main/icons/stack-16.svg */
-    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23667eea' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 8a6.5 6.5 0 1113 0A6.5 6.5 0 011.5 8zM8 0a8 8 0 100 16A8 8 0 008 0zm.5-1.736a.25.25 0 00-.5 0v1.372a.25.25 0 00.5 0V-1.736zM4.473 1.112a.25.25 0 00-.384-.32L2.902 1.85a.25.25 0 00.384.32l1.187-1.058zm7.054 0a.25.25 0 01.384-.32l1.187 1.058a.25.25 0 01-.384.32L11.527 1.112z'/%3E%3C/svg%3E");
 }
 
 .icon-project:before {
-    
-    background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/project-16.svg); /* or https://raw.githubusercontent.com/primer/octicons/main/icons/organization-16.svg */
-    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23667eea' viewBox='0 0 16 16'%3E%3Cpath d='M1.75 0A1.75 1.75 0 000 1.75v12.5C0 15.216.784 16 1.75 16h12.5A1.75 1.75 0 0016 14.25V1.75A1.75 1.75 0 0014.25 0H1.75zM1.5 1.75a.25.25 0 01.25-.25h12.5a.25.25 0 01.25.25v12.5a.25.25 0 01-.25.25H1.75a.25.25 0 01-.25-.25V1.75zM11.75 3a.75.75 0 00-.75.75v7.5a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75zm-8.25.75a.75.75 0 011.5 0v7.5a.75.75 0 01-1.5 0v-7.5zM8 3a.75.75 0 00-.75.75v7.5a.75.75 0 001.5 0v-7.5A.75.75 0 008 3z'/%3E%3C/svg%3E");
 }
 
 .icon-my-folder:before {
-    background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/file-directory-16.svg);
-    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23f59e0b' viewBox='0 0 16 16'%3E%3Cpath d='M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.5a.25.25 0 01-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1H1.75z'/%3E%3C/svg%3E");
 }
 
 .icon-item:before {
-    background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/file-16.svg);
-    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0113.25 16h-9.5A1.75 1.75 0 012 14.25V1.75zm1.75-.25a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6h-2.75A1.75 1.75 0 019 4.25V1.5H3.75zm6.75.062V4.25c0 .138.112.25.25.25h2.688a.252.252 0 00-.011-.013l-2.914-2.914a.246.246 0 00-.013-.011z'/%3E%3C/svg%3E");
 }
 
 .icon-version:before {
-    background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/clock-16.svg);
-    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2310b981' viewBox='0 0 16 16'%3E%3Cpath d='M8 0a8 8 0 110 16A8 8 0 018 0zM1.5 8a6.5 6.5 0 1113 0A6.5 6.5 0 011.5 8zm7-3.25v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5a.75.75 0 011.5 0z'/%3E%3C/svg%3E");
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #header {
+        height: 60px;
+        padding: 0 16px;
+    }
+    
+    .header-left {
+        gap: 12px;
+    }
+    
+    .title {
+        font-size: 18px;
+    }
+    
+    .subtitle {
+        display: none;
+    }
+    
+    #sidebar {
+        width: 100%;
+        top: 60px;
+        bottom: 50%;
+    }
+    
+    #preview {
+        left: 0;
+        top: 50%;
+        bottom: 0;
+    }
+    
+    .modal-content {
+        margin: 20px;
+        width: calc(100% - 40px);
+    }
+    
+    .modal-header,
+    .modal-body {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+    
+    .user-info span {
+        display: none;
+    }
 }
