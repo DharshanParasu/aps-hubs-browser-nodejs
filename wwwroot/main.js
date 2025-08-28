@@ -55,7 +55,11 @@ async function initializeApp() {
         showLoading('tree');
         
         // Try to get user profile to validate token
-        const resp = await fetch('/api/auth/profile');
+        const resp = await fetch('/api/auth/profile', {
+            headers: {
+                'Authorization': `Bearer ${currentToken}`
+            }
+        });
         if (resp.ok) {
             const user = await resp.json();
             
