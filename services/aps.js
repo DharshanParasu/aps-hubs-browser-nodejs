@@ -1,8 +1,15 @@
 const { AuthenticationClient, ResponseType } = require('@aps_sdk/authentication');
 const { DataManagementClient } = require('@aps_sdk/data-management');
+const { APS_CLIENT_ID, APS_CLIENT_SECRET } = require('../config');
 
-const authenticationClient = new AuthenticationClient();
-const dataManagementClient = new DataManagementClient();
+const authenticationClient = new AuthenticationClient({
+    clientId: APS_CLIENT_ID,
+    clientSecret: APS_CLIENT_SECRET
+});
+const dataManagementClient = new DataManagementClient({
+    clientId: APS_CLIENT_ID,
+    clientSecret: APS_CLIENT_SECRET
+});
 const service = module.exports = {};
 
 service.getUserProfile = async (accessToken) => {
